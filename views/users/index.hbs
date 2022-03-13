@@ -1,0 +1,78 @@
+<div class="content-wrapper">
+    <div class="content-header row">
+        <div class="content-header-left col-12 mb-2 mt-1">
+            <div class="breadcrumbs-top">
+                <h5 class="content-header-title float-left pr-1 mb-0">Users</h5>
+                <div class="breadcrumb-wrapper d-none d-sm-block">
+                    <ol class="breadcrumb p-0 mb-0 pl-1">
+                        <li class="breadcrumb-item"><a href="/dashboard"><i class="bx bx-home-alt"></i></a>
+                        </li>
+                        <li class="breadcrumb-item active">Users List
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-body">
+        <!-- Basic Tables start -->
+        <div class="row" id="basic-table">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Users List</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Table with outer spacing -->
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each users}}
+                                    <tr>
+                                        <td>{{name}}</td>
+                                        <td>{{email}}</td>
+                                        <td>{{phone}}</td>
+                                        <td>
+                                            {{#compare ../userSession._id '!=' _id}}
+                                            <div class="btn-group mr-1 mb-1">
+                                                <div class="dropdown">
+                                                    <button class="btn {{#compare status '==' 'active'}}btn-outline-primary{{else}}btn-outline-danger{{/compare}} dropdown-toggle btn-sm" type="button" id="statusDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        {{{humanize status}}}
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="statusDropdown" style="">
+                                                        <a class="dropdown-item change-status" data-id="{{_id}}" href="javascript:void(0);" data-status="{{#compare status '==' 'active'}}in_active{{else}}active{{/compare}}">{{#compare status '==' 'active'}}In active{{else}}Active{{/compare}}</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{else}}
+                                            {{{humanize status}}}
+                                            {{/compare}}
+                                        </td>
+                                    </tr>
+                                    {{else}}
+                                    <tr>
+                                        <td colspan="100%">No Record Found</td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                            {{pagination pagination}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Basic Tables end -->
+    </div>
+</div>
+{{setCss 'top' './app-assets/vendors/css/extensions/sweetalert2.min.css'}}
+{{setScript 'bottom' './app-assets/vendors/js/extensions/sweetalert2.all.min.js'}}
+{{setScript 'page' './page-wise-js/users.js'}}

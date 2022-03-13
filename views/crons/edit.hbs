@@ -1,0 +1,85 @@
+<div class="content-wrapper">
+    <div class="content-header row">
+        <div class="content-header-left col-12 mb-2 mt-1">
+            <div class="breadcrumbs-top">
+                <h5 class="content-header-title float-left pr-1 mb-0">Users</h5>
+                <div class="breadcrumb-wrapper d-none d-sm-block">
+                    <ol class="breadcrumb p-0 mb-0 pl-1">
+                        <li class="breadcrumb-item"><a href="/dashboard"><i class="bx bx-home-alt"></i></a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="/croms">Crons List</a>
+                        </li>
+                        <li class="breadcrumb-item active">Edit Cron
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-body">
+        <!-- Basic Tables start -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Edit Cron <span class="text-lowercase">{{cron.fileName}}</span></h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="editCronForm" method="post" action="">
+                            <div class="row">
+                                <div class="col-6 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Name</label>
+                                                <input type="text" class="form-control" name="name"
+                                                    placeholder="Enter Cron Name" value="{{cron.name}}" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Cron String</label>
+                                                <input type="text" class="form-control" name="runTime"
+                                                    placeholder="Enter Cron String"
+                                                    value="{{cron.runTime}}" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Memory</label>
+                                                <input type="text" class="form-control" name="memory"
+                                                    placeholder="Enter Memory"
+                                                    value="{{cron.memory}}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Description</label>
+                                                <fieldset class="form-group">
+                                                    <textarea class="form-control" name="description" rows="5" placeholder="Enter Description">{{cron.description}}</textarea>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Basic Tables end -->
+    </div>
+</div>
+{{setCss 'top' '/app-assets/css/plugins/forms/validation/form-validation.css'}}
+{{setScript 'bottom' '/app-assets/vendors/js/forms/validation/jquery.validate.min.js' '/app-assets/vendors/js/forms/validation/additional-methods.min.js'}}
+{{setScript 'page' '/page-wise-js/cron-edit.js'}}

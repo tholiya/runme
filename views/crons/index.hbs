@@ -1,0 +1,89 @@
+<div class="content-wrapper">
+    <div class="content-header row">
+        <div class="content-header-left col-12 mb-2 mt-1">
+            <div class="breadcrumbs-top">
+                <h5 class="content-header-title float-left pr-1 mb-0">Crons</h5>
+                <div class="breadcrumb-wrapper d-none d-sm-block">
+                    <ol class="breadcrumb p-0 mb-0 pl-1">
+                        <li class="breadcrumb-item"><a href="/dashboard"><i class="bx bx-home-alt"></i></a>
+                        </li>
+                        <li class="breadcrumb-item active">Crons List
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-body">
+        <!-- Basic Tables start -->
+        <div class="row" id="basic-table">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Crons List</h4>
+                        <div class="custom-control custom-switch mr-2 mb-1">
+                            {{#if pausedSetting.isPaused}}
+                            <button type="button" class="btn mr-1 mb-1 btn-primary btn-sm pause-play-all"  data-id="false">Play All Cron</button>
+                            {{else}}
+                            <button type="button" class="btn mr-1 mb-1 btn-primary btn-sm pause-play-all" data-id="true">Pause All Cron</button>
+                            {{/if}}
+                            <button type="button" class="btn mr-1 mb-1 btn-primary btn-sm" id="sync-cron" >Sync Cron</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Table with outer spacing -->
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>Name</th>
+                                        <th>Time</th>
+                                        <th>File Name</th>
+                                        <th>Status</th>
+                                        <th>Play/Pause</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each crons}}
+                                    <tr>
+                                        <td id="{{_id}}">{{#compare status '==' 'active'}}<span class="badge badge-pill {{#if isRunning}}badge-success{{else}}badge-danger{{/if}} badge-round badge-glow">&nbsp;&nbsp;&nbsp;</span>{{/compare}}</td>
+                                        <td>{{name}}</td>
+                                        <td>{{runTime}}</td>
+                                        <td>{{fileName}}</td>
+                                        <td>{{{humanize status}}}</td>
+                                        <td>
+                                            <div class="custom-control custom-switch mr-2 mb-1">
+                                                <input type="checkbox" {{#compare status '==' 'inactive'}}disabled{{/compare}} class="custom-control-input {{#compare status '!=' 'inactive'}}pause-cron{{/compare}}" {{#unless isPaused}}checked{{/unless}} data-id="{{_id}}" id="customSwitch10{{_id}}">
+                                                <label class="custom-control-label" for="customSwitch10{{_id}}">
+                                                    <span class="switch-icon-left"><i class="bx bx-play"></i></span>
+                                                    <span class="switch-icon-right"><i class="bx bx-pause"></i></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="/crons/edit/{{_id}}"><i class="badge-circle badge-circle-light-secondary bx bx-pencil font-medium-1"></i></a>
+                                            <a href="/crons/logs/{{fileName}}"><i class="badge-circle badge-circle-light-secondary bx bx-file font-medium-1"></i></a>
+                                        </td>
+                                    </tr>
+                                    {{else}}
+                                    <tr>
+                                        <td colspan="100%">No Record Found</td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                            {{pagination pagination}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Basic Tables end -->
+    </div>
+</div>
+{{setCss 'top' './app-assets/vendors/css/extensions/sweetalert2.min.css'}}
+{{setScript 'bottom' './app-assets/vendors/js/extensions/sweetalert2.all.min.js' './javascripts/socket.io/dist/socket.io.min.js'}}
+{{setScript 'page' './page-wise-js/socket.js'}}
+{{setScript 'page' './page-wise-js/cron.js'}}

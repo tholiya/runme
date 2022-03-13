@@ -1,0 +1,12 @@
+$(document).ready(function(){
+    $('#addRoleForm').validate({
+        rules:{
+            roleName:{
+                required:true
+            },
+            description:{
+                required:true
+            }
+        }
+    })
+})

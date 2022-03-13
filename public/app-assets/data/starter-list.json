@@ -1,0 +1,9 @@
+{
+ "listItems": [
+   {"name":"1-Column", "url":"sk-layout-1-column.html","icon":"bx bx-detail"},
+   {"name":"2-Columns", "url":"sk-layout-2-columns.html","icon":"bx bx-dock-left"},
+   {"name":"Fixed Navbar", "url":"sk-layout-fixed-navbar.html","icon":"bx bx-dock-top"},
+   {"name":"Fixed Layout", "url":"sk-layout-fixed.html","icon":"bx bx-layout"},
+   {"name":"Static Layout", "url":"sk-layout-static.html","icon":"bx bx-slider"}
+ ]
+}

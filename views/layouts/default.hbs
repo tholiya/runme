@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title>{{title}} - RunMe</title>
+  <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700"
+    rel="stylesheet">
+
+  <!-- BEGIN: Vendor CSS-->
+  <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/vendors.min.css">  
+  <!-- END: Vendor CSS-->
+
+  <!-- BEGIN: Theme CSS-->
+  <link rel="stylesheet" type="text/css" href="/app-assets/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/app-assets/css/bootstrap-extended.css">
+  <link rel="stylesheet" type="text/css" href="/app-assets/css/colors.css">
+  <link rel="stylesheet" type="text/css" href="/app-assets/css/components.css">
+  <link rel="stylesheet" type="text/css" href="/app-assets/css/themes/dark-layout.css">
+  <link rel="stylesheet" type="text/css" href="/app-assets/css/themes/semi-dark-layout.css">
+  <!-- END: Theme CSS-->
+
+  <!-- BEGIN: Page CSS-->
+  <link rel="stylesheet" type="text/css" href="/app-assets/css/core/menu/menu-types/vertical-menu.css">
+  <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/extensions/toastr.css">
+  {{{getCss 'top'}}}
+  <!-- END: Page CSS-->
+
+  <!-- BEGIN: Custom CSS-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+  <!-- END: Custom CSS-->
+
+</head>
+
+<body class="vertical-layout vertical-menu-modern dark-layout 2-columns  navbar-sticky footer-static  "
+  data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="dark-layout">
+
+  <!-- BEGIN: Header-->
+  {{> header/header}}
+  <!-- END: Header-->
+
+  <!-- BEGIN: Main Menu-->
+  {{> sidebar/sidebar}}
+  <!-- END: Main Menu-->
+
+  <!-- BEGIN: Content-->
+  <div class="app-content content">
+    <div class="content-overlay"></div>
+    {{{body}}}
+  </div>
+  <!-- END: Content-->
+
+  <div class="sidenav-overlay"></div>
+  <div class="drag-target"></div>
+
+  <!-- BEGIN: Footer-->
+  {{> footer/footer}}
+  <!-- END: Footer-->
+
+<script>
+  var socket_base_url = '{{socket_base_url}}';
+</script>
+  <!-- BEGIN: Vendor JS-->
+  <script src="/app-assets/vendors/js/vendors.min.js"></script>
+  <script src="/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
+  <script src="/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
+  <script src="/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
+  <!-- BEGIN Vendor JS-->
+
+  <!-- BEGIN: Page Vendor JS-->
+  <script src="/app-assets/vendors/js/extensions/toastr.min.js"></script>
+  {{{getScript 'bottom'}}}
+  <!-- END: Page Vendor JS-->
+
+  <!-- BEGIN: Theme JS-->
+  <script src="/app-assets/js/scripts/configs/vertical-menu-dark.js"></script>
+  <script src="/app-assets/js/core/app-menu.js"></script>
+  <script src="/app-assets/js/core/app.js"></script>
+  <script src="/app-assets/js/scripts/components.js"></script>
+  <script src="/app-assets/js/scripts/footer.js"></script>
+  <!-- END: Theme JS-->
+
+  <!-- BEGIN: Page JS-->
+  {{{getScript 'page'}}}
+  <!-- END: Page JS-->
+<!-- BEGIN: flash-->
+  {{#if flash.message}}
+      {{{flashMe flash}}}
+  {{/if}}
+  <!-- END: flash-->
+</body>
+
+</html>

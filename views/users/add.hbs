@@ -1,0 +1,130 @@
+<div class="content-wrapper">
+    <div class="content-header row">
+        <div class="content-header-left col-12 mb-2 mt-1">
+            <div class="breadcrumbs-top">
+                <h5 class="content-header-title float-left pr-1 mb-0">Users</h5>
+                <div class="breadcrumb-wrapper d-none d-sm-block">
+                    <ol class="breadcrumb p-0 mb-0 pl-1">
+                        <li class="breadcrumb-item"><a href="/dashboard"><i class="bx bx-home-alt"></i></a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="/users">Users List</a>
+                        </li>
+                        <li class="breadcrumb-item active">{{#if user}}Edit{{else}}Add{{/if}} User
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-body">
+        <!-- Basic Tables start -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">{{#if user}}Edit{{else}}Add New{{/if}} User</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="addUserForm" method="post" action="">
+                            <div class="row">
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="basic-default-name">Name</label>
+                                        <input type="text" class="form-control" name="name" placeholder="Enter user name" value="{{user.name}}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="basic-default-name">Email</label>
+                                        <input type="text" class="form-control" name="email"
+                                            placeholder="Enter email" autocomplete="new-email" value="{{user.email}}"/>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="basic-default-name">Mobile</label>
+                                        <input type="text" class="form-control" name="phone"
+                                            placeholder="Enter mobile number" autocomplete="new-phone" value="{{user.phone}}" />
+                                    </div>
+                                </div>
+                                {{!-- <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="basic-default-name">Role</label>
+                                        <select class="form-control" name="roleId">
+                                            <option value="">Select Role</option>
+                                            {{#each roles}}
+                                            <option {{#compare ../user.roleId '==' (toString _id)}}selected{{/compare}} value="{{_id}}">{{roleName}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                </div> --}}
+                                {{#unless user}}
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="basic-default-name">Password</label>
+                                        <input type="password" class="form-control" name="password"
+                                            placeholder="Enter password" autocomplete="new-password" id="basic-default-password" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="basic-default-name">Conform Password</label>
+                                        <input type="password" class="form-control" name="conform_password"
+                                            placeholder="Enter conform password" autocomplete="new-password" />
+                                    </div>
+                                </div>
+                                {{/unless}}
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{#if user}}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Change User Password</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="changePassword" method="post" action="/users/change-password/{{user._id}}">
+                            <div class="row">                                
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="basic-default-name">Password</label>
+                                        <input type="password" class="form-control" name="password"
+                                            placeholder="Enter password" autocomplete="new-password" id="basic-default-password" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="basic-default-name">Conform Password</label>
+                                        <input type="password" class="form-control" name="conform_password"
+                                            placeholder="Enter conform password" autocomplete="new-password" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+        <!-- Basic Tables end -->
+    </div>
+</div>
+
+{{setCss 'top' '/app-assets/css/plugins/forms/validation/form-validation.css'}}
+{{setScript 'bottom' '/app-assets/vendors/js/forms/validation/jquery.validate.min.js' '/app-assets/vendors/js/forms/validation/additional-methods.min.js'}}
+{{setScript 'page' '/page-wise-js/users.js'}}
