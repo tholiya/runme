@@ -4,7 +4,7 @@ class socketFunctions {
      * constructor
      */
     constructor() {
-        socket = io(socket_base_url);
+        socket = io(base_url, { transports: ["websocket"] });
         socket.on("connect", () => {
             console.log(socket.id); // x8WIv7-mJelg7on_ALbx
         });

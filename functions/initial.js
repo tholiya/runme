@@ -1,3 +1,5 @@
+const DynamicCollection = require("../models/dynamic");
+const CronFiles = require("../models/cron_files");
 module.exports = async function () {
     return new Promise(async resolve => {
         try {
@@ -5,14 +7,14 @@ module.exports = async function () {
             //check for cron user and if not availabe create cron user
             {
                 //check any users are available or not
-                let usersCount = await db('cron_user').countDocuments({
+                let usersCount = await DynamicCollection('cron_user').countDocuments({
                     status: 'active',
                     deleted: false
                 });
                 if (usersCount == 0) {
                     //if any user not availabe create one user
                     let saltedSha512 = require('salted-sha512');
-                    await db('cron_user').create({
+                    await DynamicCollection('cron_user').create({
                         name: 'Runme Admin',
                         email: 'runme@site.com',
                         phone: '9999999999',
@@ -51,22 +53,22 @@ module.exports = async function () {
                 });
 
                 for (i in fileDetails) {
-                    let count = await db('cron_files').countDocuments({ fileName: fileDetails[i].fileName });
+                    let count = await CronFiles.countDocuments({ fileName: fileDetails[i].fileName });
                     if(count > 0){
                         delete fileDetails[i].runTime;
                         delete fileDetails[i].isPaused;
                     }
-                    await db('cron_files').updateOne({ fileName: fileDetails[i].fileName }, fileDetails[i], { upsert: true });
+                    await CronFiles.updateOne({ fileName: fileDetails[i].fileName }, fileDetails[i], { upsert: true });
                     files.push(fileDetails[i].fileName);
                 }
                 //inactive removed cron
-                await db('cron_files').updateMany({
+                await CronFiles.updateMany({
                     fileName: { $nin: files }
                 }, {
                     status: 'inactive',
                     isPaused: true
                 });
-                await db('cron_files').updateMany({}, {
+                await CronFiles.updateMany({}, {
                     isRunning: false
                 });
                 console.log('New file added.');

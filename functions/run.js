@@ -1,6 +1,6 @@
 require('custom-env').env();
 var _this;
-global.db = require('../models');
+require('../models/dbConnection');
 let {cronStatus, startProcess, endProcess, cronLog} = require('./cron');
 var logFile = cronLog(process.argv[3]);
 class runFunction {

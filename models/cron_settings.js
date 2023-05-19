@@ -1,17 +1,17 @@
-module.exports = function (mongoose) {
+const mongoose = require('mongoose');
 
-    var options = {
-        collection: 'cron_settings',
-        timestamps: {
-            createdAt: 'created_on',
-            updatedAt: 'updated_on'
-        }
-    };
+const cronSettingsSchema = new mongoose.Schema({
+    isPaused:{
+        type:Boolean,
+        default:false
+    }
+},{
+    timestamps: {
+        createdAt: 'created_on',
+        updatedAt: 'updated_on'
+    }
+});
 
-    return new mongoose.Schema({
-        isPaused:{
-            type:Boolean,
-            default:false
-        }
-    }, options);
-};
+const cronSettings = mongoose.model('cron_settings', cronSettingsSchema)
+
+module.exports = cronSettings

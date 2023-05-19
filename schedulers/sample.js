@@ -10,8 +10,9 @@ module.exports = {
             /**
              * Your logic goes here 
              */
-
-            resolve(); //set resolve once your execution completed
+            setTimeout(function(){
+                resolve(); //set resolve once your execution completed
+            },5000);
         });
     }
 }

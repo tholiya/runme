@@ -3,6 +3,7 @@
  */
 let CryptoJS = require("crypto-js");
 const saltedSha512 = require('salted-sha512');
+const DynamicCollection = require("../models/dynamic");
 module.exports = {
 	login: function (app) {
 		// create object of passposrt authentication and strategy
@@ -23,7 +24,7 @@ module.exports = {
 			 */
 			function (req, username, password, done) {
 				// find user by email
-				db('cron_user').findOne({
+				DynamicCollection('cron_user').findOne({
 					'email': username.toLowerCase(),
 					deleted: false
 				}, {

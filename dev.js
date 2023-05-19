@@ -1,5 +1,5 @@
 require('custom-env').env();
-global.db = require('./models');
+require('./models/dbConnection');
 const cliSelect = require('cli-select');
 const runFunction = require('./dev/run');
 let runDev = new runFunction();

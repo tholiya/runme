@@ -64,11 +64,6 @@ There is one `sample.js` file for example in `schedulers` directory.
 	}
 **Note:** You need to `resolve()` promise once your all execution completed, if you resolve promise before execution you may loss data.
 
-You can access your mongoDB database in this cron job file also, with below example, this database will be configuration set by you in `.env` file.
-
-	await db('<collection_name>').find({});
-	await db('<collection_name>').aggregate([]);
-
 You can create logs in file, log will be created date wise with cron file name and also you can access this log log from UI.
 
 	logFile.info('From Cron'); //information log

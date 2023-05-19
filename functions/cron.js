@@ -1,13 +1,15 @@
+const CronFiles = require("../models/cron_files");
+const CronSettings = require("../models/cron_settings");
 module.exports = {
     startCron: async function () {
         var parser = require('cron-parser');
         var moment = require('moment');
-        let pausedSetting = await db('cron_settings').findOne({}, { isPaused: 1 });
+        let pausedSetting = await CronSettings.findOne({}, { isPaused: 1 });
         cronData['all'] = false;
         if (pausedSetting) {
             cronData['all'] = pausedSetting.isPaused;
         }
-        let getFile = await db('cron_files').find({
+        let getFile = await CronFiles.find({
             status: 'active'
         }, {
             runTime: 1,
@@ -53,69 +55,9 @@ module.exports = {
         }, null, true).start();
     },
 
-    start: async function () {
-        const pm2 = require('pm2');
-        //get cron file list
-        let getFile = await db('cron_files').find({}, {}, { lean: true });
-        try {
-            if (getFile.length > 0) {
-                //if file found
-                pm2.connect(function (err) {
-                    if (err) {
-                        console.error(err)
-                        process.exit(2)
-                    }
-                    let inx = 0;
-                    //async Loop through each file
-                    (async function dataLoop() {
-                        if (inx < getFile.length) {
-                            if (getFile[inx].status == 'active') {
-                                //start pm2 process
-                                pm2.start({
-                                    script: 'node ./functions/run.js ' + getFile[inx]._id + ' ' + getFile[inx].fileName,
-                                    name: getFile[inx].fileName,
-                                    cron_restart: getFile[inx].runTime,
-                                    log_date_format: "YYYY-MM-DD HH:mm Z",
-                                    autorestart: false,
-                                    env: {
-                                        DB_USER: process.env.DB_USER,
-                                        DB_PASSWORD: process.env.DB_PASSWORD,
-                                        DB_HOST: process.env.DB_HOST,
-                                        DB_PORT: process.env.DB_PORT,
-                                        DB: process.env.DB
-                                    }
-                                }, function (err, apps) {
-                                    // console.log(apps);
-                                    //go for next file
-                                    inx++;
-                                    dataLoop();
-                                });
-                            } else {
-                                //delete inactive cron
-                                pm2.delete(getFile[inx].fileName, function (err, apps) {
-                                    //go for next file
-                                    inx++;
-                                    dataLoop();
-                                })
-                            }
-
-                        } else {
-                            //disconnect pm2
-                            pm2.disconnect();
-                        }
-                    }());
-                })
-            } else {
-                console.log('No cron found')
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    },
-
     cronStatus: function (id, logFile) {
         return new Promise(async resolve => {
-            let getFile = await db('cron_files').findOne({
+            let getFile = await CronFiles.findOne({
                 _id: id,
                 isPaused: false
             });
@@ -140,7 +82,7 @@ module.exports = {
 
     startProcess: function (id) {
         return new Promise(async resolve => {
-            await db('cron_files').updateOne({
+            await CronFiles.updateOne({
                 _id: id
             }, {
                 isRunning: true
@@ -152,7 +94,7 @@ module.exports = {
     endProcess: function (id) {
         return new Promise(async resolve => {
             try {
-                await db('cron_files').updateOne({
+                await CronFiles.updateOne({
                     _id: id
                 }, {
                     isRunning: false
@@ -205,29 +147,29 @@ module.exports = {
                     });
                     var parser = require('cron-parser');
                     for (i in fileDetails) {
-                        let count = await db('cron_files').countDocuments({ fileName: fileDetails[i].fileName });
+                        let count = await CronFiles.countDocuments({ fileName: fileDetails[i].fileName });
                         if(count > 0){
                             delete fileDetails[i].runTime;
                             delete fileDetails[i].isPaused;
                         }
                         //create new record if not exist
-                        await db('cron_files').updateOne({ fileName: fileDetails[i].fileName }, fileDetails[i], { upsert: true });
+                        await CronFiles.updateOne({ fileName: fileDetails[i].fileName }, fileDetails[i], { upsert: true });
                         files.push(fileDetails[i].fileName);
                     }
                     //inactive removed cron
-                    await db('cron_files').updateMany({
+                    await CronFiles.updateMany({
                         fileName: { $nin: files }
                     }, {
                         status: 'inactive',
                         isPaused: true
                     });
-                    let pausedSetting = await db('cron_settings').findOne({}, { isPaused: 1 });
+                    let pausedSetting = await CronSettings.findOne({}, { isPaused: 1 });
                     let cronDataUpdated = {};
                     cronDataUpdated['all'] = false;
                     if (pausedSetting) {
                         cronDataUpdated['all'] = pausedSetting.isPaused;
                     }
-                    let getFile = await db('cron_files').find({
+                    let getFile = await CronFiles.find({
                         status: 'active'
                     }, {
                         runTime: 1,

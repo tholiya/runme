@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const ObjectId = require('mongoose').Types.ObjectId;
 var { paginationSort } = require('../common/middleware');
+const DynamicCollection = require("../models/dynamic");
 
 /* GET users listing. */
 router.get('/', paginationSort, async function (req, res, next) {
@@ -9,7 +10,7 @@ router.get('/', paginationSort, async function (req, res, next) {
 		let condition = {
 			deleted: false
 		};
-		let users = await db('cron_user').aggregate([{
+		let users = await DynamicCollection('cron_user').aggregate([{
 			$match: condition
 		}, {
 			$sort: req.pageSort.sort
@@ -27,7 +28,7 @@ router.get('/', paginationSort, async function (req, res, next) {
 				status: 1,
 			}
 		}]);
-		let userCount = await db('cron_user').countDocuments(condition);
+		let userCount = await DynamicCollection('cron_user').countDocuments(condition);
 		res.render('users/index', {
 			title: 'Users',
 			users: users,
@@ -58,14 +59,14 @@ router.get('/change-password', async function (req, res, next) {
 router.post('/change-password', async function (req, res, next) {
 	try {
 		let saltedSha512 = require('salted-sha512');
-		let checkPassword = await db('cron_user').countDocuments({
+		let checkPassword = await DynamicCollection('cron_user').countDocuments({
 			_id: req.user._id,
 			password: saltedSha512(req.body.current_password, process.env.SALTKEY)
 		});
 		if (checkPassword > 0) {
 			if (req.body.password == req.body.conform_password) {
 				req.body.password = saltedSha512(req.body.password, process.env.SALTKEY),
-					await db('cron_user').updateOne({
+					await DynamicCollection('cron_user').updateOne({
 						_id: req.user._id
 					}, {
 						password: req.body.password

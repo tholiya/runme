@@ -1,10 +1,4 @@
 var _this;
-const io = require('socket.io')({
-    cors: {
-        origin: process.env.BASE_URL,
-        credentials: true
-    }
-});
 
 class socketFunctions {
     /**
@@ -17,7 +11,6 @@ class socketFunctions {
                 client.join(room);
             });
         });
-        io.listen(process.env.SOCKET_PORT);
     };
 
     sendCronStatusEvent(data) {

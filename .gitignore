@@ -2,4 +2,3 @@ node_modules
 .env
 logs
 !views/logs
-package-lock.json

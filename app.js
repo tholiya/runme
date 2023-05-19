@@ -1,6 +1,7 @@
 //set environment
 require('custom-env').env();
-global.db = require('./models');
+require('./models/dbConnection');
+// global.db = require('./models');
 global.cronData = {};
 var createError = require('http-errors');
 var express = require('express');
@@ -62,13 +63,9 @@ app.use(express.static(path.join(__dirname, 'public'), {
   },
 }));
 
-let socketFunctions = require("./common/socket");
-global.socketFn = new socketFunctions();
 (async function(){
   await require('./functions/initial');
-  if (process.env.CLUSTER != undefined && process.env.CLUSTER == 'true') {
-    require('./functions/watch').start();
-  }
+  require('./functions/watch').start();
   require('./functions/cron').startCron();
 })()
 

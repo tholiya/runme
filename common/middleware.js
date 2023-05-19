@@ -21,7 +21,6 @@ module.exports = {
         if (req.user) {
             res.locals.userSession = req.user;
             res.locals.base_url = process.env.BASE_URL;
-            res.locals.socket_base_url = process.env.SOCKET_BASE_URL;
         }
         return next();
     },

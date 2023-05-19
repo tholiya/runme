@@ -28,9 +28,9 @@ if (process.env.CLUSTER != undefined && process.env.CLUSTER == 'true') {
 var dbConnectionData = [];
 
 fs.readdirSync(__dirname).filter(function (file) {
-  return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+  return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js') && (file !== 'dbConnection.js');
 }).forEach(function (file) {
-  dbConnectionData[path.parse(file).name] = mongoose.model(path.parse(file).name, require(path.join(__dirname, file))(mongoose));
+  dbConnectionData[path.parse(file).name] = require(path.join(__dirname, file));
 });
 
 module.exports = function (db_name) {

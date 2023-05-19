@@ -3,12 +3,14 @@ var router = express.Router();
 var { paginationSort } = require('../common/middleware');
 const glob = require("glob");
 const fs = require("fs");
+const CronFiles = require("../models/cron_files");
+const CronSettings = require("../models/cron_settings");
 
 /* GET home page. */
 router.get('/', paginationSort, async function (req, res, next) {
-	let crons = await db('cron_files').find({}, {}, { lean: true }).sort(req.pageSort.sort).skip(req.pageSort.skip).limit(req.pageSort.limit);
-	let cronCount = await db('cron_files').countDocuments();
-	let pausedSetting = await db('cron_settings').findOne({}, { isPaused: 1 });
+	let crons = await CronFiles.find({}, {}, { lean: true }).sort(req.pageSort.sort).skip(req.pageSort.skip).limit(req.pageSort.limit);
+	let cronCount = await CronFiles.countDocuments();
+	let pausedSetting = await CronSettings.findOne({}, { isPaused: 1 });
 	if (pausedSetting) {
 		pausedSetting = pausedSetting.toObject();
 	}
@@ -28,7 +30,7 @@ router.get('/', paginationSort, async function (req, res, next) {
 router.post('/play-pause', async function (req, res, next) {
 	try {
 		let isPaused = req.body.status == 'false' ? false : true;
-		let update = await db('cron_files').updateOne({
+		let update = await CronFiles.updateOne({
 			_id: req.body.id
 		}, {
 			isPaused: isPaused
@@ -45,11 +47,11 @@ router.post('/play-pause', async function (req, res, next) {
 
 router.post('/play-pause-all', async function (req, res, next) {
 	try {
-		let update = await db('cron_settings').updateOne({
+		let update = await CronSettings.updateOne({
 		}, {
 			isPaused: req.body.status
 		}, { upsert: true });
-		let pausedSetting = await db('cron_settings').findOne({}, { isPaused: 1 });
+		let pausedSetting = await CronSettings.findOne({}, { isPaused: 1 });
 		cronData['all'] = pausedSetting.isPaused;
 		if (update) {
 			res.send({ type: 'success', message: 'Cron status updated' });
@@ -62,7 +64,7 @@ router.post('/play-pause-all', async function (req, res, next) {
 });
 
 router.get('/edit/:id', async function (req, res, next) {
-	let cron = await db('cron_files').findOne({
+	let cron = await CronFiles.findOne({
 		_id: req.params.id
 	}, {});
 	res.render('crons/edit', {
@@ -74,7 +76,7 @@ router.get('/edit/:id', async function (req, res, next) {
 router.post('/edit/:id', async function (req, res, next) {
 	try {
 		var parser = require('cron-parser');
-		await db('cron_files').updateOne({
+		await CronFiles.updateOne({
 			_id: req.params.id
 		}, req.body);
 		var interval = parser.parseExpression(req.body.runTime);
